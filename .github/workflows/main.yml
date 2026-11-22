@@ -1,0 +1,12 @@
+# 1. Initialize git and check that data/ and mlruns/ are ignored
+git init
+git status
+
+# 2. Stage and commit your clean source code
+git add .
+git commit -m "feat: initial end-to-end self-healing demand forecaster pipeline"
+
+# 3. Connect to your GitHub repo and push
+git branch -M main
+git remote add origin https://github.com<Diwaco5>/self-healing-ml-forecaster.git
+git push -u origin main

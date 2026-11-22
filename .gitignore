@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Testing & Linting caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local MLflow & Data Artifacts (Generated at runtime)
+data/
+mlruns/
+mlartifacts/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.parquet
+
+# Prefect local state
+.prefect/
+
+# Environment variables & Secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter / Colab checkpoints
+.ipynb_checkpoints/
+*.zip
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,12 +1,35 @@
-# 1. Initialize git and check that data/ and mlruns/ are ignored
-git init
-git status
+name: ML Engineering CI
 
-# 2. Stage and commit your clean source code
-git add .
-git commit -m "feat: initial end-to-end self-healing demand forecaster pipeline"
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-# 3. Connect to your GitHub repo and push
-git branch -M main
-git remote add origin https://github.com<Diwaco5>/self-healing-ml-forecaster.git
-git push -u origin main
+jobs:
+  test-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Run Ruff Linter
+        run: ruff check src tests flows scripts
+
+      - name: Generate data, train baseline & run Pytest
+        env:
+          DO_NOT_TRACK: "1"
+        run: |
+          python -m src.data_generator
+          python -m src.train --alias champion
+          pytest -v

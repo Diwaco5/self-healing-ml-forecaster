@@ -1,0 +1,30 @@
+services:
+  mlflow:
+    image: python:3.11-slim
+    container_name: mlflow-registry
+    working_dir: /mlflow
+    command: >
+      bash -c "pip install -q mlflow==2.17.2 &&
+      mlflow server --backend-store-uri sqlite:///data/mlflow.db
+      --default-artifact-root /mlflow/mlruns --host 0.0.0.0 --port 5000"
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/mlflow/data
+      - ./mlruns:/mlflow/mlruns
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    container_name: demand-forecaster-api
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - DO_NOT_TRACK=1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./mlruns:/app/mlruns
+    depends_on:
+      - mlflow
